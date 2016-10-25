@@ -12,11 +12,13 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-protocol ImageGalleryPanGestureDelegate: class {
+protocol ImageGalleryDelegate: class {
 
   func panGestureDidStart()
   func panGestureDidChange(_ translation: CGPoint)
   func panGestureDidEnd(_ translation: CGPoint, velocity: CGPoint)
+  
+  func selectionsChanged()
 }
 
 open class ImageGalleryView: UIView {
@@ -79,7 +81,7 @@ open class ImageGalleryView: UIView {
   open lazy var selectedStack = ImageStack()
   lazy var assets = [PHAsset]()
 
-  weak var delegate: ImageGalleryPanGestureDelegate?
+  weak var delegate: ImageGalleryDelegate?
   var collectionSize: CGSize?
   var shouldTransform = false
   var imagesBeforeLoading = 0
@@ -212,16 +214,22 @@ extension ImageGalleryView: UICollectionViewDelegate {
           cell.selectedImageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
           }, completion: { _ in
             cell.selectedImageView.image = nil
-        }) 
+        })
+        
         self.selectedStack.dropAsset(asset)
-      } else if self.imageLimit == 0 || self.imageLimit > self.selectedStack.assets.count {
+      }
+      else if self.imageLimit == 0 || self.imageLimit > self.selectedStack.assets.count {
         cell.selectedImageView.image = AssetManager.getImage("selectedImageGallery")
         cell.selectedImageView.transform = CGAffineTransform(scaleX: 0, y: 0)
+        
         UIView.animate(withDuration: 0.2, animations: { _ in
           cell.selectedImageView.transform = CGAffineTransform.identity
-        }) 
+        })
+        
         self.selectedStack.pushAsset(asset)
       }
+      
+      self.delegate?.selectionsChanged()
     }
   }
 

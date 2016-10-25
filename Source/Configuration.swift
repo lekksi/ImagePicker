@@ -40,7 +40,7 @@ public struct Configuration {
 
   public static var canRotateCamera = true
   public static var collapseCollectionViewWhileShot = true
-  public static var recordLocation = true
+  public static var recordLocation = false
 
   // MARK: Images
     
