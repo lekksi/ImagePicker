@@ -348,6 +348,10 @@ extension ImagePickerController: BottomContainerViewDelegate {
     }
     
     delegate?.doneButtonDidPress(self, images: images)
+    
+    if singlePhotoMode {
+      self.stack.resetAssets([])
+    }
   }
   
   func cancelButtonDidPress() {

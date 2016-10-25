@@ -217,6 +217,8 @@ extension ImageGalleryView: UICollectionViewDelegate {
         })
         
         self.selectedStack.dropAsset(asset)
+        
+        self.delegate?.selectionsChanged()
       }
       else if self.imageLimit == 0 || self.imageLimit > self.selectedStack.assets.count {
         cell.selectedImageView.image = AssetManager.getImage("selectedImageGallery")
@@ -227,9 +229,9 @@ extension ImageGalleryView: UICollectionViewDelegate {
         })
         
         self.selectedStack.pushAsset(asset)
+        
+        self.delegate?.selectionsChanged()
       }
-      
-      self.delegate?.selectionsChanged()
     }
   }
 
