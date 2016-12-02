@@ -313,8 +313,13 @@ open class ImagePickerController: UIViewController {
     isTakingPicture = true
     bottomContainer.pickerButton.isEnabled = false
     bottomContainer.stackView.startLoader()
-    let action: (Void) -> Void = { [unowned self] in
-      self.cameraController.takePicture { self.isTakingPicture = false }
+    
+    let action: (Void) -> Void = {
+      [unowned self] in self.cameraController.takePicture { self.isTakingPicture = false }
+      
+      if self.singlePhotoMode {
+        self.doneButtonDidPress()
+      }
     }
     
     if Configuration.collapseCollectionViewWhileShot {
